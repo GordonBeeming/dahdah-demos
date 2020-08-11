@@ -1,0 +1,81 @@
+<html>
+
+<head>
+  <title>Sample using vs code editor</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+    crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" data-name="vs/editor/editor.main"
+    href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.19.3/min/vs/editor/editor.main.css" />
+  <!-- <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css" integrity="sha512-XjO5XYWl8u7tYF3CItEHgoWh8rtQmDeSzPJq4+4PIrbak7TiqeKbWv/4ZwHZ1HAf5dIWHXoguA/jobn2psKZ7w==" crossorigin="anonymous" /> -->
+
+</head>
+
+<body>
+
+  <script>var require = { paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.19.3/min/vs' } };</script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.19.3/min/vs/loader.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.19.3/min/vs/editor/editor.main.nls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.19.3/min/vs/editor/editor.main.js"></script>
+
+  <!--         
+        <script>var require = { paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' } };</script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js" integrity="sha512-gWqaPfGsZiCkYB6e5mNN4SMRpEvLGItLBqgOAoyLSKtDxWS2O1YPcOeGTy8d8l00gqc8rVue9ae/ncZqhmfj4g==" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.nls.min.js" integrity="sha512-4XY3/LL6Plkq2tXMnatY+se07ZhwFMkZehD5Z68HrKoSL3BTyLDjwFomhUWixKu8VUw6jWe/8RXT1WtH95lLFg==" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.js" integrity="sha512-CK3czr9gLG2z/ygdSM+gNenkN9AShfpW4gMjVyY06VgFHLoc4OCoO92Z8UkcBwVX0ufoYbJw3IVs1mHfXQeI3g==" crossorigin="anonymous"></script> -->
+
+  <h1>My Blog</h1>
+  <p>Some intro... and look at my cool code snippet</p>
+
+  <pre id='CodeBlock' data-lang='csharp'>
+using System;
+
+namespace VSCodeEditor
+{
+  class Program
+  {
+    static void Main(string[] args)
+    {
+      Console.WriteLine("Hello World!");
+    }
+  }
+}   
+</pre>
+
+  <p>Wasn't that cool 😁</p>
+
+  <script>
+
+    monaco.editor.colorizeElement(document.getElementById('CodeBlock'));
+
+          // var codeContent = $.trim($('#CodeBlock').text());
+          // $('#CodeBlock').html('');
+
+          // var editorCodeBlock = monaco.editor.create(document.getElementById('CodeBlock'), {
+          //   value: codeContent,
+          //   language: "csharp",
+          //   theme: "vs",
+          //   lineNumbers: 'on',
+          //   glyphMargin: false,
+          //   vertical: 'auto',
+          //   horizontal: 'auto',
+          //   verticalScrollbarSize: 10,
+          //     horizontalScrollbarSize: 10,
+          //   scrollBeyondLastLine: false,
+          //   readOnly: true,
+          //   automaticLayout: true,
+          //   minimap: {
+          //     enabled: false
+          //   },
+          //   lineHeight:19,
+          // });
+          // $("#CodeBlock").height((editorCodeBlock.getModel().getLineCount() * 19) + 10); // 19 = line height, 10 = vertical scrollbar height
+          
+  </script>
+</body>
+
+</html>

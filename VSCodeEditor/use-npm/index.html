@@ -1,0 +1,69 @@
+<html>
+
+<head>
+  <title>Sample using vs code editor</title>
+
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+
+  <link rel="stylesheet" data-name="vs/editor/editor.main"
+    href="node_modules/monaco-editor/min/vs/editor/editor.main.css" />
+
+</head>
+
+<body>
+
+  <script>var require = { paths: { 'vs': 'node_modules/monaco-editor/min/vs' } };</script>
+
+  <script src="node_modules/monaco-editor/min/vs/loader.js"></script>
+  <script src="node_modules/monaco-editor/min/vs/editor/editor.main.nls.js"></script>
+  <script src="node_modules/monaco-editor/min/vs/editor/editor.main.js"></script>
+
+  <h1>My Blog</h1>
+  <p>Some intro... and look at my cool code snippet</p>
+
+  <pre id='CodeBlock' data-lang='csharp'>
+  using System;
+
+  namespace VSCodeEditor
+  {
+    class Program
+    {
+      static void Main(string[] args)
+      {
+        Console.WriteLine("Hello World!");
+      }
+    }
+  } 
+</pre>
+  <p>Wasn't that cool 😁</p>
+
+  <script>
+    //monaco.editor.colorizeElement(document.getElementById('CodeBlock'));
+
+    var codeContent = $.trim($('#CodeBlock').text());
+    $('#CodeBlock').html('');
+    var editorCodeBlock = monaco.editor.create(document.getElementById('CodeBlock'), {
+      value: codeContent,
+      language: "csharp",
+      theme: "vs",
+      lineNumbers: 'on',
+      glyphMargin: false,
+      vertical: 'auto',
+      horizontal: 'auto',
+      verticalScrollbarSize: 10,
+      horizontalScrollbarSize: 10,
+      scrollBeyondLastLine: false,
+      readOnly: true,
+      automaticLayout: true,
+      minimap: {
+        enabled: false
+      },
+      lineHeight: 19,
+      codeLens: true
+    });
+    $("#CodeBlock").height((editorCodeBlock.getModel().getLineCount() * 19) + 10); // 19 = line height, 10 = vertical scrollbar height
+
+  </script>
+</body>
+
+</html>
