@@ -10,7 +10,7 @@ kubectl describe pv
 
 # Create an SA password and sa connection string
 kubectl create secret generic mssql --from-literal=SA_PASSWORD=$SqlServer_SA_Password
-kubectl create secret generic mssqlconnection --from-literal=SA_CONNECTIONSTRING="data source=mssqlinst;initial catalog=$($SqlServer_ProdDatabaseName);user id=sa;password=$($SqlServer_SA_Password);Trusted_Connection=False;MultipleActiveResultSets=true;"
+kubectl create secret generic mssqlconnection --from-literal=SA_CONNECTIONSTRING="data source=mssqlinst,12345;initial catalog=$($SqlServer_ProdDatabaseName);user id=sa;password=$($SqlServer_SA_Password);Trusted_Connection=False;MultipleActiveResultSets=true;"
 
 # kubectl delete secret mssql
 # kubectl delete secret mssqlconnection

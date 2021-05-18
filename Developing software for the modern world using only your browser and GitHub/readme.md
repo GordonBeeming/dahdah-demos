@@ -10,3 +10,4 @@ Some of the links were used partially to create the content and others are just 
 - [Quickstart: Create a private container registry using the Azure CLI](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-azure-cli)
 - [Dockerize an ASP.NET Core application](https://docs.docker.com/samples/dotnetcore/)
 - [GitHub Actions for deploying to Kubernetes service](https://docs.microsoft.com/en-us/azure/aks/kubernetes-action)
+- [Create an HTTPS ingress controller on Azure Kubernetes Service (AKS)](https://docs.microsoft.com/en-us/azure/aks/ingress-tls)
