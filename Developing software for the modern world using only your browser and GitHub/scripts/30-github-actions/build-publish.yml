@@ -1,0 +1,68 @@
+name: Build and Publish
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+        
+    - name: 'update version'
+      id: update-version
+      shell: bash
+      run: |
+        buildDateNumber=$(date '+%Y.%m.%d')
+        buildId=$GITHUB_RUN_NUMBER
+        buildNumber="$buildDateNumber.$buildId"
+        echo "$buildNumber"
+        projContent=$(sed "s+<Version>[0-9][0-9]*.*[0-9]*.*[0-9]*.*</Version>+<Version>$buildNumber</Version>+g" webapp.csproj)
+        echo "$projContent" > webapp.csproj
+        echo "::set-output name=BUILD_NUMBER::$buildNumber"
+      working-directory: src/webapp
+  
+    - name: Install dependencies
+      run: dotnet restore /nologo
+      working-directory: src/webapp
+    - name: Build
+      run: dotnet build --configuration release --no-restore /nologo
+      working-directory: src/webapp
+    - name: Publish
+      run: dotnet publish --configuration release --no-restore --no-build --output "../../artifacts/webapp" --verbosity normal /nologo /property:GenerateFullPaths=true
+      working-directory: src/webapp
+        
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: 'Docker build and push image'
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    - run: |
+        docker build -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/webapp:${{ steps.update-version.outputs.BUILD_NUMBER }} -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/webapp:latest -f build/dockerfile .        
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/webapp:${{ steps.update-version.outputs.BUILD_NUMBER }}
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/webapp:latest
+
+    - name: deploy to cluster
+      uses: steebchen/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: set image deployment azure-website azure-website=${{ secrets.REGISTRY_LOGIN_SERVER }}/webapp:${{ steps.update-version.outputs.BUILD_NUMBER }}
+    - name: verify deployment
+      uses: steebchen/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        KUBECTL_VERSION: "1.19"

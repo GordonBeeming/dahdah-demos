@@ -1,0 +1,4 @@
+create new dotnet webapp
+dotnet gitignore
+
+create sql server

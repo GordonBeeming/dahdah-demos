@@ -1,0 +1,1 @@
+az group delete --name $ResourceGroupName --yes --no-wait

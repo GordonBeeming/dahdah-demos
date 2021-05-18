@@ -1,0 +1,19 @@
+
+
+dotnet restore /nologo
+dotnet build --configuration release --no-restore /nologo
+dotnet publish --configuration release --no-restore --no-build --output "../../artifacts/webapp" --verbosity normal /nologo /property:GenerateFullPaths=true
+
+create build folder
+create dockerfile
+docker build -t webapp:dev -f build/dockerfile .
+
+
+
+????
+docker run -d -p 8080:80 --name mywebapp webapp
+
+
+Add version tag to csproj
+<Version>0.0.0.1</Version>
+
