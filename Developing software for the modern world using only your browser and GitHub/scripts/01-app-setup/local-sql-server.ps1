@@ -21,6 +21,25 @@ docker stop sql1
 docker rm sql1
 
 
+@"
+
+// this will do the initial DB population
+InitializeDatabase(app);
+}
+
+private void InitializeDatabase(IApplicationBuilder app)
+{
+try
+{
+    using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+    {
+        scope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
+    }
+}
+catch{}
+}
+"@
+
 
 
 # Write post on how these can make your life hard...
