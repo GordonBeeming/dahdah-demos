@@ -1,5 +1,5 @@
 # Create the website deployment
-kubectl apply -f "$($DemoScriptsRoot)25-aks\02-website.yaml"
+kubectl apply -f "$($DemoScriptsRoot)25-aks/02-website.yaml"
 
 # view the status of the pod, wait for the status to be running
 kubectl get pod

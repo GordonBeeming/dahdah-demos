@@ -2,7 +2,7 @@
 az acr import --name $AzureContainerRegistryName --source mcr.microsoft.com/mssql/server:2019-latest --image server:2019-latest
 
 # Create the persistent volume claim in Kubernetes
-kubectl apply -f "$($DemoScriptsRoot)25-aks\01-pvc.yaml"
+kubectl apply -f "$($DemoScriptsRoot)25-aks/01-pvc.yaml"
 # Verify the persistent volume claim
 kubectl describe pvc mssql-data
 # Verify the persistent volume
@@ -16,7 +16,7 @@ kubectl create secret generic mssqlconnection --from-literal=SA_CONNECTIONSTRING
 # kubectl delete secret mssqlconnection
 
 # Create the SQL deployment
-kubectl apply -f "$($DemoScriptsRoot)25-aks\01-sqldeployment.yaml"
+kubectl apply -f "$($DemoScriptsRoot)25-aks/01-sqldeployment.yaml"
 
 # view the status of the pod, wait for the status to be running
 kubectl get pod
