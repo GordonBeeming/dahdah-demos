@@ -1,5 +1,10 @@
 az --version
-az upgrade
+
+# az upgrade
+sudo apt remove azure-cli -y && sudo apt autoremove -y
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+az --version
 
 az login
 
@@ -11,8 +16,6 @@ $SubscriptionId = $CurrentAccount.id
 
 az provider show -n Microsoft.OperationsManagement -o table
 az provider show -n Microsoft.OperationalInsights -o table
-az provider show -n Microsoft.ContainerInstance -o table
 
 az provider register --namespace Microsoft.OperationsManagement
 az provider register --namespace Microsoft.OperationalInsights
-az provider register --namespace Microsoft.ContainerInstance
