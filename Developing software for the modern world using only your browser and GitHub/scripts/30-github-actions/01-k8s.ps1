@@ -1,7 +1,7 @@
 # Create a service principal
 $DeploymentServicePrincipalInfo = az ad sp create-for-rbac --name $DeploymentServicePrincipalName --role contributor --scopes "/subscriptions/$($SubscriptionId)/resourceGroups/$ResourceGroupName" --sdk-auth | Out-string | ConvertFrom-Json
 
-$KubeConfigData = Get-Content "$($env:HOMEPATH)\.kube/config" | Out-string
+$KubeConfigData = Get-Content "$($env:HOME)\.kube/config" | Out-string
 $KubeConfigBytes = [System.Text.Encoding]::UTF8.GetBytes($KubeConfigData)
 $KubeConfigEncodedData = [Convert]::ToBase64String($KubeConfigBytes)
 
