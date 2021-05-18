@@ -12,8 +12,8 @@ kubectl describe pv
 kubectl create secret generic mssql --from-literal=SA_PASSWORD=$SqlServer_SA_Password
 kubectl create secret generic mssqlconnection --from-literal=SA_CONNECTIONSTRING="data source=mssqlinst;initial catalog=$($SqlServer_ProdDatabaseName);user id=sa;password=$($SqlServer_SA_Password);Trusted_Connection=False;MultipleActiveResultSets=true;"
 
-kubectl delete secret mssql
-kubectl delete secret mssqlconnection
+# kubectl delete secret mssql
+# kubectl delete secret mssqlconnection
 
 # Create the SQL deployment
 kubectl apply -f "$($DemoScriptsRoot)25-aks\01-sqldeployment.yaml"
