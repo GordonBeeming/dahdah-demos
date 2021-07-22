@@ -1,0 +1,596 @@
+{
+	"info": {
+		"_postman_id": "b83f5ae2-c891-4d0a-b7ed-cae0573b7c9e",
+		"name": "Permission Groups Demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List Projects",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"project_id\", pm.response.json().value[0].id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{pat_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dev.azure.com/{{org_name}}/_apis/projects?api-version=6.0",
+					"protocol": "https",
+					"host": [
+						"dev",
+						"azure",
+						"com"
+					],
+					"path": [
+						"{{org_name}}",
+						"_apis",
+						"projects"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "6.0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Project Descriptor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"project_descriptor\", pm.response.json().value);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{pat_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://vssps.dev.azure.com/{{org_name}}/_apis/graph/descriptors/{{project_id}}",
+					"protocol": "https",
+					"host": [
+						"vssps",
+						"dev",
+						"azure",
+						"com"
+					],
+					"path": [
+						"{{org_name}}",
+						"_apis",
+						"graph",
+						"descriptors",
+						"{{project_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Project Groups",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"group_descriptor\", pm.response.json().value[0].descriptor);\r",
+							"pm.environment.set(\"group_id\", pm.response.json().value[0].originId);\r",
+							"pm.environment.set(\"group_descriptor_decoded\", \"get this\");\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{pat_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://vssps.dev.azure.com/{{org_name}}/_apis/graph/groups?api-version=5.1-preview&scopeDescriptor={{project_descriptor}}",
+					"protocol": "https",
+					"host": [
+						"vssps",
+						"dev",
+						"azure",
+						"com"
+					],
+					"path": [
+						"{{org_name}}",
+						"_apis",
+						"graph",
+						"groups"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "5.1-preview"
+						},
+						{
+							"key": "scopeDescriptor",
+							"value": "{{project_descriptor}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Group Permissions",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{pat_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dev.azure.com/{{org_name}}/_apis/accesscontrollists/{{security_namespace_id}}?api-version=5.1&includeExtendedInfo=true&token={{project_id}}\\{{group_id}}&recurse=false",
+					"protocol": "https",
+					"host": [
+						"dev",
+						"azure",
+						"com"
+					],
+					"path": [
+						"{{org_name}}",
+						"_apis",
+						"accesscontrollists",
+						"{{security_namespace_id}}"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "5.1"
+						},
+						{
+							"key": "includeExtendedInfo",
+							"value": "true"
+						},
+						{
+							"key": "token",
+							"value": "{{project_id}}\\{{group_id}}"
+						},
+						{
+							"key": "recurse",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Security Namespaces",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"security_namespace_id\", pm.response.json().value[0].namespaceId);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{pat_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dev.azure.com/{{org_name}}/_apis/securitynamespaces",
+					"protocol": "https",
+					"host": [
+						"dev",
+						"azure",
+						"com"
+					],
+					"path": [
+						"{{org_name}}",
+						"_apis",
+						"securitynamespaces"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set permissions ACE (user)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{pat_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"token\":\"{{project_id}}\\\\{{group_id}}\",\r\n    \"merge\":true,\r\n    \"inheritPermissions\": true,\r\n    \"accessControlEntries\":[\r\n        {\r\n            \"descriptor\":\"Microsoft.IdentityModel.Claims.ClaimsIdentity;{{user_claim_identity}}\",\r\n            \"allow\":11,\r\n            \"deny\":0\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://dev.azure.com/{{org_name}}/_apis/AccessControlEntries/{{security_namespace_id}}?api-version=5.1",
+					"protocol": "https",
+					"host": [
+						"dev",
+						"azure",
+						"com"
+					],
+					"path": [
+						"{{org_name}}",
+						"_apis",
+						"AccessControlEntries",
+						"{{security_namespace_id}}"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "5.1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Identities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"user_descriptor\", pm.response.json().results[0].identities[0].subjectDescriptor);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{pat_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"query\": \"gordon\",\r\n    \"identityTypes\": [\r\n      \"user\",\r\n      \"group\"\r\n    ],\r\n    \"operationScopes\": [\r\n      \"ims\"\r\n    ],\r\n    \"options\": {\r\n      \"MinResults\": 5,\r\n      \"MaxResults\": 20\r\n    },\r\n    \"properties\": [\r\n      \"DisplayName\",\r\n      \"IsMru\",\r\n      \"ScopeName\",\r\n      \"SamAccountName\",\r\n      \"Active\",\r\n      \"SubjectDescriptor\",\r\n      \"Department\",\r\n      \"JobTitle\",\r\n      \"Mail\",\r\n      \"MailNickname\",\r\n      \"PhysicalDeliveryOfficeName\",\r\n      \"SignInAddress\",\r\n      \"Surname\",\r\n      \"Guest\",\r\n      \"TelephoneNumber\",\r\n      \"Manager\",\r\n      \"Description\"\r\n    ]\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://dev.azure.com/{{org_name}}/_apis/IdentityPicker/Identities?api-version=5.1-preview.1",
+					"protocol": "https",
+					"host": [
+						"dev",
+						"azure",
+						"com"
+					],
+					"path": [
+						"{{org_name}}",
+						"_apis",
+						"IdentityPicker",
+						"Identities"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "5.1-preview.1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"user_claim_identity\", pm.response.json().originId + \"@live.com\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{pat_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://vssps.dev.azure.com/{{org_name}}/_apis/graph/users/{{user_descriptor}}?api-version=6.0-preview.1",
+					"protocol": "https",
+					"host": [
+						"vssps",
+						"dev",
+						"azure",
+						"com"
+					],
+					"path": [
+						"{{org_name}}",
+						"_apis",
+						"graph",
+						"users",
+						"{{user_descriptor}}"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "6.0-preview.1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete permissions ACE (user)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{pat_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://dev.azure.com/{{org_name}}/_apis/accesscontrollists/{{security_namespace_id}}?api-version=5.1&tokens={{project_id}}\\{{group_id}}&descriptors=Microsoft.IdentityModel.Claims.ClaimsIdentity;{{user_claim_identity}}",
+					"protocol": "https",
+					"host": [
+						"dev",
+						"azure",
+						"com"
+					],
+					"path": [
+						"{{org_name}}",
+						"_apis",
+						"accesscontrollists",
+						"{{security_namespace_id}}"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "5.1"
+						},
+						{
+							"key": "tokens",
+							"value": "{{project_id}}\\{{group_id}}"
+						},
+						{
+							"key": "descriptors",
+							"value": "Microsoft.IdentityModel.Claims.ClaimsIdentity;{{user_claim_identity}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set permissions ACE (group)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{pat_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"token\":\"{{project_id}}\\\\{{group_id}}\",\r\n    \"merge\":true,\r\n    \"inheritPermissions\": true,\r\n    \"accessControlEntries\":[\r\n        {\r\n            \"descriptor\":\"Microsoft.TeamFoundation.Identity;{{group_descriptor_decoded}}\",\r\n            \"allow\":11,\r\n            \"deny\":0\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://dev.azure.com/{{org_name}}/_apis/AccessControlEntries/{{security_namespace_id}}?api-version=5.1",
+					"protocol": "https",
+					"host": [
+						"dev",
+						"azure",
+						"com"
+					],
+					"path": [
+						"{{org_name}}",
+						"_apis",
+						"AccessControlEntries",
+						"{{security_namespace_id}}"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "5.1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete permissions ACE (group)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{pat_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://dev.azure.com/{{org_name}}/_apis/accesscontrollists/{{security_namespace_id}}?api-version=5.1&tokens={{project_id}}\\{{group_id}}&descriptors=Microsoft.TeamFoundation.Identity;{{group_descriptor_decoded}}",
+					"protocol": "https",
+					"host": [
+						"dev",
+						"azure",
+						"com"
+					],
+					"path": [
+						"{{org_name}}",
+						"_apis",
+						"accesscontrollists",
+						"{{security_namespace_id}}"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "5.1"
+						},
+						{
+							"key": "tokens",
+							"value": "{{project_id}}\\{{group_id}}"
+						},
+						{
+							"key": "descriptors",
+							"value": "Microsoft.TeamFoundation.Identity;{{group_descriptor_decoded}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
