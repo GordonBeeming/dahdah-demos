@@ -1,6 +1,6 @@
 void Main()
 {
-	Console.WriteLine(Descriptors.Decode("vssgp.Uy0xLTktMTU1MTM3NDI0NS0zMTUxMTQxNTA2LTQxNzk5ODY1MDMtMzA2Njc5MzIyNi0zNjY1ODY4MTg5LTEtNDEyOTk1MDM0NC0zMzUxNDQzNzg5LTI0MTc2NDEyNjItMTMzMzUxMjI2NQ"));
+	Console.WriteLine(Descriptors.Decode("_________________________________"));
 }
 
 // You can define other methods, fields, classes and namespaces here
