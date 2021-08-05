@@ -1,0 +1,63 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none
+
+jobs: 
+# Set an output variable in a lifecycle hook of a deployment job executing canary strategy.
+- deployment: A
+  pool:
+    name: vmssagentspool
+  environment: staging
+  strategy:                  
+    runOnce:
+      deploy:
+        steps:
+        - bash: echo "##vso[task.setvariable variable=myOutputVar;isOutput=true]this is the deployment variable value"
+          name: setvarStep
+        - bash: echo $(setvarStep.myOutputVar)
+          name: echovar
+
+# Map the variable from the job.
+- job: B1
+  dependsOn: A
+  pool:
+    name: vmssagentspool
+  variables:
+    myVarFromDeploymentJob: $[ dependencies.A.outputs['deploy_10.setvarStep.myOutputVar'] ]
+  steps:
+  - script: "echo $(myVarFromDeploymentJob)"
+    name: echovar
+    
+# Map the variable from the job.
+- job: B2
+  dependsOn: A
+  pool:
+    name: vmssagentspool
+  variables:
+    myVarFromDeploymentJob: $[ dependencies.A.outputs['deploy_10.setvarStep.myOutputVar'] ]
+  steps:
+  - script: "echo $(myVarFromDeploymentJob)"
+    name: echovar
+    
+# Map the variable from the job.
+- job: B3
+  dependsOn: A
+  pool:
+    name: vmssagentspool
+  variables:
+    myVarFromDeploymentJob: $[ dependencies.A.outputs['deploy_10.setvarStep.myOutputVar'] ]
+  steps:
+  - script: "echo $(myVarFromDeploymentJob)"
+    name: echovar
+    
+# Map the variable from the job.
+- job: C
+  dependsOn: [ B1, B2, B3 ]
+  pool:
+    name: vmssagentspool
+  steps:
+  - script: "echo 'all done'"
+    name: echovar
