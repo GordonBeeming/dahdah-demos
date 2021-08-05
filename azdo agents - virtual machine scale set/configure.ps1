@@ -59,7 +59,7 @@ $($SubscriptionName)
 # Service Principal Id
 $($DeploymentServicePrincipalInfo.clientId)
 
-# Service PrincipalKkey
+# Service Principal key
 $($DeploymentServicePrincipalInfo.clientSecret)
 
 # Tenant Id
